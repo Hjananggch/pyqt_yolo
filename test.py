@@ -38,8 +38,6 @@ def box(frame,results):
 
 
 def run():
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter('output.mp4', fourcc, 20, (int(1344), int(756)))
     cap = cv2.VideoCapture(r'test_video.mp4')
     while True:
         ret, frame = cap.read()
@@ -47,13 +45,11 @@ def run():
             break
         results = model(frame)
         frame = box(frame,results)
-
         cv2.imshow('frame', frame)
-        out.write(frame)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cap.release()
-    out.release()
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
