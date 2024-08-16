@@ -7,8 +7,8 @@ import numpy as np
 @dataclass
 class BYTETrackerArgs:
     track_thresh: float = 0.7
-    track_buffer: int = 40
-    match_thresh: float = 0.9
+    track_buffer: int = 60
+    match_thresh: float = 0.95
     aspect_ratio_thresh: float = 3.5
     min_box_area: float = 1.0
     mot20: bool = False
@@ -39,16 +39,19 @@ def box(frame,results):
 
 def run():
     cap = cv2.VideoCapture(r'test_video.mp4')
+    frame_num = 0
     while True:
         ret, frame = cap.read()
         if not ret:
             break
-        results = model(frame)
-        frame = box(frame,results)
-        cv2.imshow('frame', frame)
+        if frame_num % 3 == 0:
+            results = model(frame)
+            frame = box(frame,results)
 
+        cv2.imshow('frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        frame_num += 1
     cap.release()
     cv2.destroyAllWindows()
 
